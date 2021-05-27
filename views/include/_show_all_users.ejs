@@ -1,0 +1,32 @@
+<% for(var i=0; i< users.length; i++){ %>
+    <tr>
+        <td>
+            <%= i+1 %>
+        </td>
+        <td>
+            <%= users[i].name %>
+        </td>
+        <td>
+            <%= users[i].email %>
+        </td>
+        <td>
+            <%= users[i].password %>
+        </td>
+        <td style="
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      border: none;
+    ">
+            <a href="/update_user?id=<%=users[i]._id %>" class="icons material-icons-outlined">
+      edit </a
+    ><a
+      class="delete_user_Button icons material-icons-outlined"
+      data-id="<%=users[i]._id%>"
+    >
+      delete
+    </a>
+        </td>
+    </tr>
+
+    <% } %>

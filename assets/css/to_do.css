@@ -1,0 +1,36 @@
+body {
+    background: rgb(248, 249, 255);
+}
+
+.main-todo-box {
+    width: fit-content;
+}
+
+.main-body {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: space-between;
+}
+
+.remove-button {
+    color: rgb(255, 197, 195);
+}
+
+.register-button {
+    color: rgb(195, 211, 255);
+}
+
+.login-button {
+    color: rgb(195, 255, 195);
+}
+
+.save-button {
+    color: rgb(219, 219, 219);
+}
+
+.footer {
+    margin: 15px;
+}

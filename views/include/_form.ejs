@@ -1,0 +1,23 @@
+<form action="/api/users" method="POST" id="add_user" class="form_add_user">
+    <div class="new_user">
+        <div class="form-group" style="display: flex; flex-direction: row; justify-content: space-between">
+            <label for="name" class="form_labels">Name</label>
+            <input type="hidden" name="id" value="" />
+            <input class="form_input" type="text" name="name" value="" placeholder="Name" />
+        </div>
+        <div class="form-group" style="display: flex; flex-direction: row; justify-content: space-between">
+            <label for="Email" class="form_labels">Email</label>
+            <input class="form_input" type="text" name="email" value="" placeholder="example@gmail.com" />
+        </div>
+        <div class="form-group" style="display: flex; flex-direction: row; justify-content: space-between">
+            <label for="password" class="form_labels">Password</label>
+            <input class="form_input" type="text" name="password" value="" placeholder="password" />
+        </div>
+
+        <div class="form-group" style="display: flex; flex-direction: row-reverse">
+            <button type="submit" class="form_submit_button btn text-dark update">
+        Save
+      </button>
+        </div>
+    </div>
+</form>
