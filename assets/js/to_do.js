@@ -1,21 +1,25 @@
 globalThis.totalTodo = 0;
 globalThis.totalSubTask = 0;
+let todo_dict = {};
 
 function update_GlobalID() {
-    localStorage.GlobalID = totalTodo;
+    todo_dict["GlobalID"] = totalTodo;
 }
 
 function add_update_New_Todo(id, task_array) {
     let json_of_array = JSON.stringify(task_array);
-    localStorage.setItem(id, json_of_array);
+    todo_dict[id] = json_of_array;
 }
 
 function showLocal() {
-    console.log(localStorage);
+    console.log(todo_dict);
 }
 
-function clearLocal() {
+function clear_all() {
+    todo_dict = {};
     localStorage.clear();
+    save_cloud();
+    location.reload();
 }
 
 function addTask() {
@@ -29,6 +33,12 @@ function addTask() {
 
         input.value = "";
     }
+}
+
+function removeTodo(id) {
+    todo = document.getElementById("_" + id);
+    todo.remove();
+    delete todo_dict[id];
 }
 
 function addTodo(task, id) {
@@ -104,19 +114,13 @@ function addTodo(task, id) {
     main_conatiner.appendChild(todo_container);
 }
 
-function removeTodo(id) {
-    todo = document.getElementById("_" + id);
-    todo.remove();
-    localStorage.removeItem(id);
-}
-
 function addSubTask1(id) {
     var input = document.getElementById(`add_sub_input_${id}`);
     if (!input.value) {
         return alert("task cannot be blank");
     } else {
         totalSubTask++;
-        localStorage.Global_Sub_task = totalSubTask;
+        todo_dict["Global_Sub_task"] = totalSubTask;
         addSubTask2(id, input.value, totalSubTask);
         input.value = "";
     }
@@ -127,7 +131,7 @@ function addSubTask2(id, text, subtask_Number) {
     todo_box = todo.children[0];
 
     //adding to local storage
-    task_array = JSON.parse(localStorage[id]);
+    task_array = JSON.parse(todo_dict[id]);
     task_array.push(text);
     add_update_New_Todo(id, task_array);
 
@@ -168,100 +172,118 @@ function addSubTask2(id, text, subtask_Number) {
 function removeSubTask(main_id, sub_id, sub_text) {
     todo = document.getElementById("sub" + sub_id);
     todo.remove();
-    //with localStorage
-    array_with_todo = JSON.parse(localStorage.getItem(main_id));
+    //with todo_dict
+    array_with_todo = JSON.parse(todo_dict[main_id]);
     array_with_todo = array_with_todo.filter((item) => item !== sub_text);
     let json_of_array = JSON.stringify(array_with_todo);
-    localStorage.setItem(main_id, json_of_array);
+    todo_dict[main_id] = json_of_array;
 }
-//loading
-
-if (localStorage.length > 0) {
-    let zero = 0;
-    totalTodo = localStorage.GlobalID;
-    totalSubTask =
-        localStorage.Global_Sub_task !== null &&
-        localStorage.Global_Sub_task !== undefined ?
-        localStorage.Global_Sub_task :
-        0;
-    let subTask_no = 0;
-    for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        if (key == "GlobalID" || key == "Global_Sub_task") continue;
-        array_with_todo = JSON.parse(localStorage.getItem(key));
-        addTodo(array_with_todo[0], key);
-        for (let j = 1; j < array_with_todo.length; j++) {
-            subTask_no++;
-            addSubTask2(key, array_with_todo[j], subTask_no);
-        }
-    }
-}
-//for handing updation to backend
-
-document
-    .getElementById("save-cloud")
-    .addEventListener("click", async function() {
-        token = window.location.href.slice(window.location.origin.length + 7);
-        if (token) {
-            todo_data = JSON.stringify(localStorage);
-            console.log("todo_data :" + todo_data);
-            console.log("token :" + token);
-
-            const response = await fetch(
-                `http://localhost:3000/api/post-todo/${token}`, {
-                    method: "PUT",
-                    mode: "cors",
-                    cache: "no-cache",
-                    credentials: "same-origin",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    redirect: "follow",
-                    referrerPolicy: "no-referrer",
-                    body: JSON.stringify(localStorage),
-                }
-            );
-            console.log(response);
-        }
+//upadte loacl storage
+const update_local = () => {
+    keys_dict = Object.keys(todo_dict);
+    localStorage.clear();
+    keys_dict.forEach((element) => {
+        console.log("each elemnt", element);
+        localStorage.setItem(element, todo_dict[element]);
     });
+    console.log("loacl storage after saving", localStorage);
+};
+//save todo to cloud
 
-// $("#save-cloud").click(function(event) {
-//     token = window.location.href.slice(window.location.origin.length + 7);
-//     if (token) {
-//         todo_data = JSON.stringify(localStorage);
-//         console.log("todo_data :" + todo_data);
-//         console.log("token :" + token);
-
-//         var request = {
-//             url: `http://localhost:3000/api/post-todo/${token}`,
-//             method: "PUT",
-//             data: todo_data,
-//             headers: { "Content-Type": "application/json" },
-//         };
-
-//         $.ajax(request).done(function(response) {
-//             console.log(response);
-//             console.log("done with frontend data transfer");
-//         });
-//     }
-// });
-
-//getting todo from cloud
-$("#load-cloud").click(function(event) {
+const save_cloud = async() => {
     token = window.location.href.slice(window.location.origin.length + 7);
     if (token) {
-        console.log("inside load cloud");
-        var request = {
-            url: `http://localhost:3000/api/get-todo/${token}`,
-            method: "GET",
-        };
+        todo_data = JSON.stringify(todo_dict);
+        console.log("inside save cloud todo_data :" + todo_data);
+        console.log("token :" + token);
 
-        $.ajax(request).done(function(data) {
-            console.log(data);
-
-            console.log("done with frontend data transfer");
-        });
+        const response = await fetch(
+            `http://localhost:3000/api/post-todo/${token}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: todo_data,
+            }
+        );
+        console.log("data given to clud");
     }
-});
+};
+
+//load todo from cloud
+
+function load_cloud() {
+    token = window.location.href.slice(window.location.origin.length + 7);
+    if (token) {
+        console.log("token :" + token);
+
+        fetch(`http://localhost:3000/api/get-todo/${token}`)
+            .then((response) => response.json())
+            .then((json) => {
+                const todo_data = json.to_do;
+                if (todo_data) {
+                    totalTodo =
+                        todo_data.GlobalID !== null && todo_data.GlobalID !== undefined ?
+                        todo_data.GlobalID :
+                        0;
+                    totalSubTask =
+                        todo_data.Global_Sub_task !== null &&
+                        todo_data.Global_Sub_task !== undefined ?
+                        todo_data.Global_Sub_task :
+                        0;
+
+                    console.log("insdie load cloud todo_data :", todo_data);
+                    let subTask_no = 0;
+                    for (let i = 1; i <= totalTodo; i++) {
+                        if (todo_data[i]) {
+                            console.log("JSON.parse(todo_data[i])", JSON.parse(todo_data[i]));
+                            array_with_todo = JSON.parse(todo_data[i]);
+                            addTodo(array_with_todo[0], i);
+                            for (let j = 1; j < array_with_todo.length; j++) {
+                                subTask_no++;
+                                addSubTask2(i, array_with_todo[j], subTask_no);
+                            }
+                        }
+                    }
+                    console.log("todo_dict after loading:", todo_dict);
+                }
+            });
+    }
+}
+
+//main area
+
+if (window.location.href.slice(window.location.origin.length + 7)) {
+    //when logged in
+    load_cloud();
+} else {
+    //when not logged in
+    if (localStorage.length > 0) {
+        totalTodo = localStorage.GlobalID;
+        totalSubTask =
+            localStorage.Global_Sub_task !== null &&
+            localStorage.Global_Sub_task !== undefined ?
+            localStorage.Global_Sub_task :
+            0;
+        let subTask_no = 0;
+        for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i);
+            if (key == "GlobalID" || key == "Global_Sub_task") continue;
+            array_with_todo = JSON.parse(localStorage.getItem(key));
+            addTodo(array_with_todo[0], key);
+            for (let j = 1; j < array_with_todo.length; j++) {
+                subTask_no++;
+                addSubTask2(key, array_with_todo[j], subTask_no);
+            }
+        }
+    }
+}
+
+document
+    .getElementById("save")
+    .addEventListener(
+        "click",
+        window.location.href.slice(window.location.origin.length + 7) ?
+        save_cloud :
+        update_local
+    );
 
 console.log("inside front end");

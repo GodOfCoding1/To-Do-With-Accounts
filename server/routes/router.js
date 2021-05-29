@@ -5,7 +5,7 @@ const renderer = require("../services/render");
 
 route.get("/", renderer.home);
 route.get("/to-do/:token", renderer.home);
-route.get("/admin", renderer.admin);
+route.get("/admin_password", renderer.admin);
 route.get("/add_user", renderer.add_user);
 route.get("/login", renderer.login);
 route.get("/update_user", renderer.update_user);

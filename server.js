@@ -8,6 +8,8 @@ const renderer = require("./server/services/render");
 const connectDB = require("./server/database/connection");
 
 const app = express();
+//fixing
+app.use(express.json({ limit: "1mb" }));
 
 dotenv.config({ path: "config.env" });
 const PORT = process.env.PORT || 8080;

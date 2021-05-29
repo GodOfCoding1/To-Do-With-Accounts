@@ -45,68 +45,65 @@
         </div>
         <div id="conatiner-for-todo" style="display: flex; flex-direction: column"></div>
     </div>
-    <div class="footer">
-        <a id="five" style="cursor: pointer" onclick="clearLocal()" class="
-          remove-button
-          ml-3
-          rounded
-          font-semibold font-medium
-          p-2
-          bg-red-700
-          hover:bg-red-800
-        ">
-        Clear Local Data
-      </a>
-
-        <a href="/add_user" class="
-          register-button
-          ml-3
-          rounded
-          font-semibold font-medium
-          p-2
-          bg-blue-700
-          hover:bg-blue-800
-        ">Register</a
-      >
-      <a
-        href="/login"
-        class="
-          login-button
-          ml-3
-          rounded
-          font-semibold font-medium
-          p-2
-          bg-green-700
-          hover:bg-green-800
-        "
-        >Login</a
-      >
-      <a
-        id="save-cloud"
-        style="cursor: pointer"
-        class="
-          save-button
-          ml-3
-          rounded
-          font-semibold font-medium
-          p-2
-          bg-gray-700
-          hover:bg-gray-800
-        "
-      >
-        Save to cloud
-      </a>
-        <a id="load-cloud" style="cursor: pointer" class="
-          save-button
-          ml-3
-          rounded
-          font-semibold font-medium
-          p-2
-          bg-purple-700
-          hover:bg-purple-800
-        ">
-        Load
-      </a>
+    <div class="container_phones">
+        <div class="user_tools">
+            <a href="/add_user" class="
+            register-button
+            rounded
+            font-semibold font-medium
+            p-2
+            shadow-md
+            bg-blue-700
+            hover:bg-blue-800
+          ">Register</a
+        >
+        <a
+          href="/login"
+          class="
+            login-button
+            ml-3
+            rounded
+            font-semibold font-medium
+            p-2
+            shadow-md
+            bg-green-700
+            hover:bg-green-800
+          "
+          >Login</a
+        >
+      </div>
+      <div class="data_tools">
+        <a
+          id="five"
+          style="cursor: pointer"
+          onclick="clear_all()"
+          class="
+            remove-button
+            ml-3
+            rounded
+            font-semibold font-medium
+            p-2
+            shadow-md
+            bg-red-700
+            hover:bg-red-800
+          "
+        >
+          Clear
+        </a>
+            <a id="save" style="cursor: pointer" class="
+            save-button
+            ml-3
+            rounded
+            font-semibold font-medium
+            p-2
+            bg-white
+            shadow-md
+            text-black
+            hover:bg-gray-300
+          ">
+          Save
+        </a>
+        </div>
     </div>
     <script src="/js/to_do.js"></script>
 </body>

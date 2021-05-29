@@ -31,6 +31,35 @@ body {
     color: rgb(219, 219, 219);
 }
 
-.footer {
-    margin: 15px;
+.user_tools {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 25px;
+}
+
+.data_tools {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 25px;
+}
+
+@media (max-width: 683px) {
+    .container_phones {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .user_tools {
+        display: flex;
+        flex-direction: row;
+        position: inherit;
+    }
+    .data_tools {
+        display: flex;
+        flex-direction: row;
+        position: inherit;
+    }
 }
