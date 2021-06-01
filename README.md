@@ -1,3 +1,3 @@
 # To-Do-With-Accounts
-a todo list that has accounts and stores todo lists on the cloud or locally depending on login status
+a todo list that has accounts and stores todo lists on the cloud or locally depending on login status. In this project the user has 2 options. They can either create an account to store their todo list on the cloud or they can chose to not login and store them locally. If they chose to create an account they can enter a password and this password will be stored by hashing. It uses login tokens . The database used is mongoDB. This project also has a hidden admin page that only the admin can access . This admin page provides the details of all the users and their ToDo lists. Live Demo - https://todo-with-login.herokuapp.com/
 ### Deployed On - https://todo-with-login.herokuapp.com/
